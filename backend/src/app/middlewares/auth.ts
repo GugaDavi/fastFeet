@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { Secret } from 'jsonwebtoken'
 
 import authConfig from '../../config/auth'
 
@@ -22,8 +22,6 @@ export default async (req: Request, res: Response, next: NextFunction): Promise<
     const decoded: DecodedInterface = jwt.verify(token, authConfig.secret) as DecodedInterface
 
     if (decoded.id) {
-      console.log('Authenticated User')
-
       return next()
     }
     return

@@ -1,12 +1,14 @@
 import { Sequelize } from 'sequelize'
 
-import UserModel from '../app/models/UserModel'
-
 import urlConnection from '../config/database'
+
+import UserModel from '../app/models/UserModel'
 import RecipientsModel from '../app/models/RecipientsModel'
 import AddressModel from '../app/models/AddressModel'
+import DeliverymanModel from '../app/models/DeliverymanModel'
+import FileModel from '../app/models//FileModel'
 
-const models = [AddressModel, UserModel, RecipientsModel]
+const models = [AddressModel, UserModel, RecipientsModel, DeliverymanModel, FileModel]
 
 class Database {
   public connection!: Sequelize

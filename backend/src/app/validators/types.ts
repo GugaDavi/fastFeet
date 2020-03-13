@@ -15,3 +15,9 @@ export interface AddressSchema {
   city: string
   zip_code: string
 }
+
+export interface DeliverymanSchema {
+  name: string
+  email: string
+  avatar_id?: number
+}
