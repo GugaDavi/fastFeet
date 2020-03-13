@@ -2,3 +2,5 @@ node_modules/
 .env
 temp/uploads/*
 !temp/uploads/.gitkeep
+temp/signatures/*
+!temp/signatures/.gitkeep
