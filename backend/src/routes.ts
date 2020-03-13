@@ -2,6 +2,7 @@ import { Router } from 'express'
 import multer from 'multer'
 
 import multerConfig from './config/multer'
+import signatureConfig from './config/signature.config'
 
 // Controllers
 
@@ -10,6 +11,7 @@ import RecipientController from './app/controllers/RecipientController'
 import AddressController from './app/controllers/AddressController'
 import DeliverymanController from './app/controllers/DeliverymanController'
 import FileController from './app/controllers/FileController'
+import SignatureController from './app/controllers/SignatureController'
 
 // Validators
 
@@ -24,6 +26,7 @@ import AuthMiddleware from './app/middlewares/auth'
 
 const routes = Router()
 const upload = multer(multerConfig)
+const uploadSignature = multer(signatureConfig)
 
 routes.post('/sessions', SessionValidatior.store, SessionController.store)
 
@@ -43,5 +46,7 @@ routes.put('/deliverymans/:id', DeliverymanValidator.update, DeliverymanControll
 routes.delete('/deliverymans/:id', DeliverymanController.delete)
 
 routes.post('/files', upload.single('file'), FileController.store)
+
+routes.post('/signatures', uploadSignature.single('signature'), SignatureController.store)
 
 export default routes
