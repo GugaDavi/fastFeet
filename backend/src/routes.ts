@@ -52,7 +52,7 @@ routes.delete('/deliverymans/:id', DeliverymanController.delete)
 routes.get('/deliveryman/:id', DeliverymanPackagesController.index)
 routes.get('/deliveryman/:id/deliveries', DeliverymanPackagesController.show)
 routes.post('/deliveryman/:id/:packageId', CheckOfficeHour, DeliverymanPackagesController.store)
-routes.put('/deliveryman/:id/:packageId', CheckOfficeHour, DeliverymanPackagesController.update)
+routes.put('/deliveryman/:id/:packageId', CheckOfficeHour, uploadSignature.single('signature'), DeliverymanPackagesController.update)
 
 routes.post('/files', upload.single('file'), FileController.store)
 
