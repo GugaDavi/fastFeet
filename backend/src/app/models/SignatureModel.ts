@@ -15,7 +15,7 @@ class SignatureModel extends Model {
       url: {
         type: Sequelize.VIRTUAL,
         get (): string {
-          return `${process.env.APP_URL}:${process.env.APP_PORT}/files/${this.path}`
+          return `${process.env.APP_URL}:${process.env.APP_PORT}/signatures/${this.path}`
         }
       }
     }, { sequelize, tableName: 'signatures' })

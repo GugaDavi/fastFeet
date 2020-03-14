@@ -21,3 +21,10 @@ export interface DeliverymanSchema {
   email: string
   avatar_id?: number
 }
+
+export interface PackageSchema {
+  recipient_id: number
+  deliveryman_id: number
+  signature_id?: number
+  product: string
+}

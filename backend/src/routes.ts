@@ -12,6 +12,8 @@ import AddressController from './app/controllers/AddressController'
 import DeliverymanController from './app/controllers/DeliverymanController'
 import FileController from './app/controllers/FileController'
 import SignatureController from './app/controllers/SignatureController'
+import PackageController from './app/controllers/PackageController'
+import DeliverymanPackagesController from './app/controllers/DeliverymanPackagesController'
 
 // Validators
 
@@ -19,10 +21,12 @@ import SessionValidatior from './app/validators/SessionValidator'
 import RecipientValidator from './app/validators/RecipientValidator'
 import AddressValidator from './app/validators/AddressValidator'
 import DeliverymanValidator from './app/validators/DeliverymanValidator'
+import PackageValidator from './app/validators/PackageValidator'
 
 // Middlewares
 
 import AuthMiddleware from './app/middlewares/auth'
+import CheckOfficeHour from './app/middlewares/checkOfficeHour'
 
 const routes = Router()
 const upload = multer(multerConfig)
@@ -45,8 +49,18 @@ routes.post('/deliverymans', DeliverymanValidator.store, DeliverymanController.s
 routes.put('/deliverymans/:id', DeliverymanValidator.update, DeliverymanController.update)
 routes.delete('/deliverymans/:id', DeliverymanController.delete)
 
+routes.get('/deliveryman/:id', DeliverymanPackagesController.index)
+routes.get('/deliveryman/:id/deliveries', DeliverymanPackagesController.show)
+routes.post('/deliveryman/:id/:packageId', CheckOfficeHour, DeliverymanPackagesController.store)
+routes.put('/deliveryman/:id/:packageId', CheckOfficeHour, DeliverymanPackagesController.update)
+
 routes.post('/files', upload.single('file'), FileController.store)
 
 routes.post('/signatures', uploadSignature.single('signature'), SignatureController.store)
+
+routes.get('/packages', PackageController.index)
+routes.post('/packages', PackageValidator.store, PackageController.store)
+routes.put('/packages/:id', PackageValidator.update, PackageController.update)
+routes.delete('/packages/:id', PackageController.delete)
 
 export default routes
