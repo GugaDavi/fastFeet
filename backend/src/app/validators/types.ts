@@ -5,6 +5,7 @@ export interface SessionSchema {
 
 export interface RecipientSchema {
   name: string
+  address?: AddressSchema
 }
 
 export interface AddressSchema {

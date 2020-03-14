@@ -9,13 +9,6 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      recipient_id: {
-        type: Sequelize.INTEGER,
-        references: { model: 'recipients', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-        allowNull: false,
-      },
       street: {
         type: Sequelize.STRING,
         allowNull: false,

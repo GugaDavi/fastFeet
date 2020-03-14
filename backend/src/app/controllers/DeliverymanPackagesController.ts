@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { startOfDay, endOfDay } from 'date-fns'
 import { Op } from 'sequelize'
 
-import Deliveryman from '../models/DeliverymanModel'
+import Address from '../models/AddressModel'
 import Package from '../models/PackageModel'
 import Recipient from '../models/RecipientsModel'
 import Signature from '../models/SignatureModel'
@@ -21,7 +21,13 @@ class DeliverymanPackagesController {
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['id', 'name']
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: Address,
+              as: 'address'
+            }
+          ]
         },
         {
           model: Signature,
@@ -115,6 +121,10 @@ class DeliverymanPackagesController {
 
     if (!openedPackage) {
       return res.status(403).json({ error: 'Package not found' })
+    }
+
+    if (openedPackage.start_date === null) {
+      return res.status(401).json({ error: 'Package is not open' })
     }
 
     if (openedPackage.end_date !== null) {

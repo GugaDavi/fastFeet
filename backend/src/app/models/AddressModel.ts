@@ -4,7 +4,6 @@ import RecipientsModel from './RecipientsModel'
 
 class AddressModel extends Model {
   readonly id!: number
-  readonly recipient_id!: number
   public street!: string
   public house_number!: string
   public complement?: string
@@ -16,7 +15,6 @@ class AddressModel extends Model {
 
   static init (sequelize) {
     super.init({
-      recipient_id: Sequelize.INTEGER,
       street: Sequelize.STRING,
       house_number: Sequelize.STRING,
       complement: Sequelize.STRING,
@@ -26,10 +24,6 @@ class AddressModel extends Model {
     }, { sequelize, tableName: 'address' })
 
     return this
-  }
-
-  static associate (models): void {
-    this.belongsTo(models.RecipientsModel, { foreignKey: 'recipient_id', as: 'recipients' })
   }
 }
 

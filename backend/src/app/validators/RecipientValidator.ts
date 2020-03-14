@@ -6,7 +6,15 @@ import { RecipientSchema } from './types'
 class RecipientValidator {
   async store (req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const schema: Yup.Schema<RecipientSchema> = Yup.object().shape({
-      name: Yup.string().required('Name is required')
+      name: Yup.string().required('Name is required'),
+      address: Yup.object().shape({
+        street: Yup.string().required(),
+        house_number: Yup.string().required(),
+        complement: Yup.string(),
+        state: Yup.string().required(),
+        city: Yup.string().required(),
+        zip_code: Yup.string().required()
+      }).required()
     })
 
     try {
@@ -21,7 +29,15 @@ class RecipientValidator {
 
   async update (req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const schema: Yup.Schema<RecipientSchema> = Yup.object().shape({
-      name: Yup.string().required('Name is required')
+      name: Yup.string(),
+      address: Yup.object().shape({
+        street: Yup.string(),
+        house_number: Yup.string(),
+        complement: Yup.string(),
+        state: Yup.string(),
+        city: Yup.string(),
+        zip_code: Yup.string()
+      })
     })
 
     try {

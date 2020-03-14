@@ -1,9 +1,9 @@
 import Sequelize, { Model } from 'sequelize'
-import AddressModel from './AddressModel'
 
 class RecipientsModel extends Model {
-  readonly id!: number;
-  public name!: string;
+  readonly id!: number
+  public name!: string
+  public address_id!: number
   readonly created_at!: Date
   readonly updated_at!: Date
 
@@ -11,6 +11,10 @@ class RecipientsModel extends Model {
     super.init({
       name: Sequelize.STRING
     }, { sequelize, tableName: 'recipients' })
+  }
+
+  static associate (models: any): void {
+    this.belongsTo(models.AddressModel, { foreignKey: 'address_id', as: 'address' })
   }
 }
 

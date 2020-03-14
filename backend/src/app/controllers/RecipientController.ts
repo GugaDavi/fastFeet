@@ -1,16 +1,37 @@
 import { Request, Response } from 'express'
 
 import RecipientsModel from '../models/RecipientsModel'
+import Address from '../models/AddressModel'
 
 class RecipientController {
   async index (req: Request, res: Response): Promise<Response> {
-    const recipients: RecipientsModel = await RecipientsModel.findAll()
+    const recipients: RecipientsModel = await RecipientsModel.findAll({
+      include: [
+        {
+          model: Address,
+          as: 'address'
+        }]
+    })
     return res.json({ recipients: recipients })
   }
 
   async store (req: Request, res: Response): Promise<Response> {
-    const recipient = await RecipientsModel.create(req.body)
-    return res.json({ created_recipient: recipient })
+    const { name, address } = req.body
+
+    const createdAddress: Address = await Address.create(address)
+
+    const recipient = await RecipientsModel.create({
+      name,
+      address_id: createdAddress.id
+    }, {
+      include: [
+        {
+          model: Address,
+          as: 'address'
+        }]
+    })
+
+    return res.json({ createdRecipient: recipient })
   }
 
   async update (req: Request, res: Response): Promise<Response> {
@@ -18,6 +39,14 @@ class RecipientController {
 
     if (!recipient) {
       return res.status(404).json({ error: 'Recipient not found' })
+    }
+
+    const { address } = req.body
+
+    if (address) {
+      const updatedAddress: Address = await Address.findByPk(recipient.address_id)
+
+      await updatedAddress.update(address)
     }
 
     await recipient.update(req.body)
