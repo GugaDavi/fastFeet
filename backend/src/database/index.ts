@@ -9,8 +9,18 @@ import DeliverymanModel from '../app/models/DeliverymanModel'
 import FileModel from '../app/models//FileModel'
 import SignatureModel from '../app/models/SignatureModel'
 import PackageModel from '../app/models/PackageModel'
+import DeliveryProblemModel from '../app/models/DeliveryProblemModel'
 
-const models = [AddressModel, UserModel, PackageModel, RecipientsModel, DeliverymanModel, FileModel, SignatureModel]
+const models = [
+  AddressModel,
+  UserModel,
+  PackageModel,
+  RecipientsModel,
+  DeliverymanModel,
+  FileModel,
+  SignatureModel,
+  DeliveryProblemModel
+]
 
 class Database {
   public connection!: Sequelize

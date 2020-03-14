@@ -29,3 +29,7 @@ export interface PackageSchema {
   signature_id?: number
   product: string
 }
+
+export interface DeliveryProblemSchema {
+  description: string
+}

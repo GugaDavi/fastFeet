@@ -14,6 +14,7 @@ import FileController from './app/controllers/FileController'
 import SignatureController from './app/controllers/SignatureController'
 import PackageController from './app/controllers/PackageController'
 import DeliverymanPackagesController from './app/controllers/DeliverymanPackagesController'
+import DeliveryProblemsController from './app/controllers/DeliveryProblemsController'
 
 // Validators
 
@@ -22,6 +23,7 @@ import RecipientValidator from './app/validators/RecipientValidator'
 import AddressValidator from './app/validators/AddressValidator'
 import DeliverymanValidator from './app/validators/DeliverymanValidator'
 import PackageValidator from './app/validators/PackageValidator'
+import DeliveryProblemValidator from './app/validators/DeliveryProblemValidator'
 
 // Middlewares
 
@@ -62,5 +64,10 @@ routes.get('/packages', PackageController.index)
 routes.post('/packages', PackageValidator.store, PackageController.store)
 routes.put('/packages/:id', PackageValidator.update, PackageController.update)
 routes.delete('/packages/:id', PackageController.delete)
+
+routes.get('/deliveryProblems', DeliveryProblemsController.index)
+routes.get('/deliveryProblems/:packageId', DeliveryProblemsController.show)
+routes.post('/deliveryProblems/:packageId/problems/', DeliveryProblemValidator.store, DeliveryProblemsController.store)
+routes.delete('/deliveryProblems/:reportId/cancel', DeliveryProblemsController.delete)
 
 export default routes
