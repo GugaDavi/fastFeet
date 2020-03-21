@@ -1,70 +1,91 @@
-import { Request, Response } from 'express'
+import { Request, Response } from "express";
+import { Op } from "sequelize";
 
-import RecipientsModel from '../models/RecipientsModel'
-import Address from '../models/AddressModel'
+import RecipientsModel from "../models/RecipientsModel";
+import Address from "../models/AddressModel";
 
 class RecipientController {
-  async index (req: Request, res: Response): Promise<Response> {
+  async index(req: Request, res: Response): Promise<Response> {
+    const { filter } = req.query;
+
+    const findFilter = filter && {
+      name: {
+        [Op.like]: `${filter}%`,
+      },
+    };
+
     const recipients: RecipientsModel = await RecipientsModel.findAll({
+      where: findFilter,
       include: [
         {
           model: Address,
-          as: 'address'
-        }]
-    })
-    return res.json({ recipients: recipients })
+          as: "address",
+        },
+      ],
+    });
+    return res.json({ recipients: recipients });
   }
 
-  async store (req: Request, res: Response): Promise<Response> {
-    const { name, address } = req.body
+  async store(req: Request, res: Response): Promise<Response> {
+    const { name, address } = req.body;
 
-    const createdAddress: Address = await Address.create(address)
+    const createdAddress: Address = await Address.create(address);
 
-    const recipient = await RecipientsModel.create({
-      name,
-      address_id: createdAddress.id
-    }, {
-      include: [
-        {
-          model: Address,
-          as: 'address'
-        }]
-    })
+    const recipient = await RecipientsModel.create(
+      {
+        name,
+        address_id: createdAddress.id,
+      },
+      {
+        include: [
+          {
+            model: Address,
+            as: "address",
+          },
+        ],
+      }
+    );
 
-    return res.json({ createdRecipient: recipient })
+    return res.json({ createdRecipient: recipient });
   }
 
-  async update (req: Request, res: Response): Promise<Response> {
-    const recipient: RecipientsModel = await RecipientsModel.findByPk(req.params.id)
+  async update(req: Request, res: Response): Promise<Response> {
+    const recipient: RecipientsModel = await RecipientsModel.findByPk(
+      req.params.id
+    );
 
     if (!recipient) {
-      return res.status(404).json({ error: 'Recipient not found' })
+      return res.status(404).json({ error: "Recipient not found" });
     }
 
-    const { address } = req.body
+    const { address } = req.body;
 
     if (address) {
-      const updatedAddress: Address = await Address.findByPk(recipient.address_id)
+      const updatedAddress: Address = await Address.findByPk(
+        recipient.address_id
+      );
 
-      await updatedAddress.update(address)
+      await updatedAddress.update(address);
     }
 
-    await recipient.update(req.body)
+    await recipient.update(req.body);
 
-    return res.json({ updated_recipient: recipient })
+    return res.json({ updated_recipient: recipient });
   }
 
-  async delete (req: Request, res: Response): Promise<Response> {
-    const recipient: RecipientsModel = await RecipientsModel.findByPk(req.params.id)
+  async delete(req: Request, res: Response): Promise<Response> {
+    const recipient: RecipientsModel = await RecipientsModel.findByPk(
+      req.params.id
+    );
 
     if (!recipient) {
-      return res.status(404).json({ error: 'Recipient not found' })
+      return res.status(404).json({ error: "Recipient not found" });
     }
 
-    await RecipientsModel.destroy({ where: { id: recipient.id } })
+    await RecipientsModel.destroy({ where: { id: recipient.id } });
 
-    return res.send()
+    return res.send();
   }
 }
 
-export default new RecipientController()
+export default new RecipientController();

@@ -1,18 +1,18 @@
-import { Request, Response } from 'express'
+import { Request, Response } from "express";
 
-import File from '../models/FileModel'
+import File from "../models/FileModel";
 
 class FileController {
-  async store (req: Request, res: Response): Promise<Response> {
-    const { originalname: name, filename: path } = req.file
+  async store(req: Request, res: Response): Promise<Response> {
+    const { originalname: name, filename: path } = req.file;
 
     const file = await File.create({
       name,
-      path
-    })
+      path,
+    });
 
-    return res.json({ createdFile: { file } })
+    return res.json({ createdFile: file });
   }
 }
 
-export default new FileController()
+export default new FileController();
