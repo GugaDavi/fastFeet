@@ -6,7 +6,7 @@ import File from "../models/FileModel";
 
 class DeliverymanController {
   async index(req: Request, res: Response): Promise<Response> {
-    const { filter } = req.query;
+    const { page = 1, filter } = req.query;
 
     const findFilter = filter && {
       name: {
@@ -19,6 +19,9 @@ class DeliverymanController {
       include: [
         { model: File, as: "avatar", attributes: ["id", "path", "url"] },
       ],
+      limit: 5,
+      offset: (page - 1) * 5,
+      order: ["createdAt"],
     });
     return res.json({ deliverymans: deliverymans });
   }

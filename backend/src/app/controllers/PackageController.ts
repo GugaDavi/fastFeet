@@ -4,6 +4,7 @@ import { Op } from "sequelize";
 import Package from "../models/PackageModel";
 import Recipient from "../models/RecipientsModel";
 import Deliveryman from "../models/DeliverymanModel";
+import Address from "../models/AddressModel";
 import File from "../models/FileModel";
 import Signature from "../models/SignatureModel";
 
@@ -24,6 +25,12 @@ class PackageController {
           model: Recipient,
           as: "recipient",
           attributes: ["id", "name"],
+          include: [
+            {
+              model: Address,
+              as: "address",
+            },
+          ],
         },
         {
           model: Deliveryman,
@@ -43,8 +50,9 @@ class PackageController {
           attributes: ["path", "url"],
         },
       ],
-      limit: 20,
-      offset: (page - 1) * 20,
+      limit: 5,
+      offset: (page - 1) * 5,
+      order: ["createdAt"],
     });
 
     return res.json({ packages: packages });
@@ -134,7 +142,9 @@ class PackageController {
       return res.status(404).json({ error: "Package not found" });
     }
 
-    await reqPackage.destroy();
+    reqPackage.canceled_at = new Date();
+
+    await reqPackage.save();
 
     return res.json();
   }
