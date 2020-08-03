@@ -1,7 +1,12 @@
 import React from "react";
 
-// import { Container } from './styles';
+import { Container } from "./styles";
+import RecipientsList from "./RecipientsList";
 
 export default function Recipients() {
-  return <h1>Recipients</h1>;
+  return (
+    <Container>
+      <RecipientsList />
+    </Container>
+  );
 }

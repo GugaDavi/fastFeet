@@ -6,7 +6,7 @@ import Address from "../models/AddressModel";
 
 class RecipientController {
   async index(req: Request, res: Response): Promise<Response> {
-    const { filter } = req.query;
+    const { page = 1, filter } = req.query;
 
     const findFilter = filter && {
       name: {
@@ -22,6 +22,8 @@ class RecipientController {
           as: "address",
         },
       ],
+      limit: 5,
+      offset: (page - 1) * 5,
     });
     return res.json({ recipients: recipients });
   }
